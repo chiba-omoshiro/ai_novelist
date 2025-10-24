@@ -283,16 +283,22 @@ JSON配列形式で出力してください。
 物語を魅力的に描写し、読者を引き込む小説を書いてください。
 """
 
-        # モデル名の変換
+        # モデル名の変換と最大トークン数の設定
         model_map = {
             "haiku3.5": "claude-3-5-haiku-20241022",
             "sonnet4.5": "claude-sonnet-4-20250514"
         }
 
+        # モデルごとの最大トークン数
+        max_tokens_map = {
+            "haiku3.5": 8192,
+            "sonnet4.5": 8192
+        }
+
         try:
             response = self.anthropic.messages.create(
                 model=model_map.get(model, "claude-3-5-haiku-20241022"),
-                max_tokens=16000,
+                max_tokens=max_tokens_map.get(model, 8192),
                 messages=[
                     {"role": "user", "content": prompt}
                 ]
