@@ -27,13 +27,50 @@ AIと一緒に小説を創作するStreamlitアプリケーション
 
 ## セットアップ
 
-### 1. 依存関係のインストール
+### クイックスタート（自動セットアップ）
+
+セットアップスクリプトを使えば、簡単にセットアップできます：
+
+**Mac/Linux:**
+```bash
+./setup.sh
+```
+
+**Windows:**
+```bash
+setup.bat
+```
+
+その後、`.env` ファイルにAPIキーを設定してください。
+
+### 手動セットアップ
+
+#### 1. 仮想環境の作成と有効化
+
+**重要**: 複数のPythonプロジェクトがある場合は仮想環境を使用することを強く推奨します。
+
+```bash
+# 仮想環境を作成
+python3 -m venv venv
+
+# 仮想環境を有効化（Mac/Linux）
+source venv/bin/activate
+
+# 仮想環境を有効化（Windows）
+venv\Scripts\activate
+```
+
+仮想環境が有効化されると、ターミナルのプロンプトに `(venv)` が表示されます。
+
+### 2. 依存関係のインストール
+
+仮想環境を有効化した状態で、以下のコマンドを実行します：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 環境変数の設定
+### 3. 環境変数の設定
 
 `.env.example` を `.env` にコピーして、APIキーを設定します：
 
@@ -56,13 +93,46 @@ ANTHROPIC_API_KEY=your_anthropic_api_key_here
 - **Google Gemini API**: [Google AI Studio](https://makersuite.google.com/app/apikey) でAPIキーを取得
 - **Anthropic Claude API**: [Anthropic Console](https://console.anthropic.com/) でAPIキーを取得
 
-### 3. アプリケーションの起動
+### 4. アプリケーションの起動
+
+#### 起動スクリプトを使う（推奨）
+
+**Mac/Linux:**
+```bash
+./run.sh
+```
+
+**Windows:**
+```bash
+run.bat
+```
+
+#### 手動で起動
+
+仮想環境を有効化した状態で、以下のコマンドを実行します：
 
 ```bash
+# 仮想環境の有効化（Mac/Linux）
+source venv/bin/activate
+
+# 仮想環境の有効化（Windows）
+venv\Scripts\activate
+
+# アプリケーションの起動
 streamlit run app.py
 ```
 
 ブラウザが自動的に開き、アプリケーションが表示されます（通常は http://localhost:8501 ）。
+
+### 5. 作業終了後
+
+アプリケーションを終了したら、仮想環境を無効化できます：
+
+```bash
+deactivate
+```
+
+次回起動時は、再度仮想環境を有効化してから `streamlit run app.py` を実行してください。
 
 ## 使い方
 
