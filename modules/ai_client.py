@@ -170,6 +170,73 @@ JSON配列形式で出力してください。
         except Exception as e:
             return [{"name": "エラー", "personality": str(e)}]
 
+    def generate_novel_prompt(
+        self,
+        setting: str,
+        plot: str,
+        characters: list[dict],
+        length: str,
+        style: str,
+        tone: str,
+        ai_platform: str = "claude"
+    ) -> str:
+        """チャットAI用の小説執筆プロンプトを生成"""
+
+        characters_text = "\n".join(
+            f"- **{c.get('name', '名前なし')}** ({c.get('role', '役割不明')})\n"
+            f"  - 性格: {c.get('personality', '')}\n"
+            f"  - 背景: {c.get('background', '不明')}"
+            for c in characters
+        )
+
+        length_guide = {
+            "短編": "2000-3000文字程度",
+            "中編": "5000-8000文字程度",
+            "長編": "10000文字以上"
+        }
+
+        # プラットフォーム別の推奨事項
+        platform_notes = {
+            "claude": "# Claude用プロンプト\n\n長文生成に優れています。必要に応じて「続きを書いて」と指示してください。",
+            "chatgpt": "# ChatGPT用プロンプト\n\n長文の場合は複数回に分けて生成を依頼してください。",
+            "gemini": "# Gemini用プロンプト\n\n長文生成が可能です。プロンプトをそのまま貼り付けて使用してください。"
+        }
+
+        prompt = f"""{platform_notes.get(ai_platform, '')}
+
+あなたはプロの小説家です。以下の設定に基づいて、魅力的な小説を執筆してください。
+
+## 基本設定
+
+{setting}
+
+## プロット（物語の流れ）
+
+{plot}
+
+## 登場人物
+
+{characters_text}
+
+## 執筆指示
+
+- **長さ**: {length}（{length_guide.get(length, '')}）
+- **文体**: {style}
+- **雰囲気・読後感**: {tone}
+
+## 執筆のポイント
+
+1. 登場人物の心理描写を丁寧に書いてください
+2. 情景描写で読者を物語の世界に引き込んでください
+3. プロットに沿いつつも、自然な展開を心がけてください
+4. 文体は指定されたスタイルを維持してください
+5. 読後感が指定された雰囲気になるよう意識してください
+
+それでは、小説を執筆してください。
+"""
+
+        return prompt
+
     def write_novel(
         self,
         setting: str,
